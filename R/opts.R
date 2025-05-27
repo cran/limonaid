@@ -181,6 +181,10 @@ opts$defaults <-
         "\\2")
     ),
 
+    ls_domain = "limesurvey.net",
+
+    ls_subdomain = "account",
+
     sticky = TRUE,
 
     silent=TRUE

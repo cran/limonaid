@@ -20,7 +20,7 @@ Results from the API (sometimes plain text, sometimes base64-encoded text).
 }
 \description{
 This function makes a generic call to the LimeSurvey API.
-See \url{https://manual.limesurvey.org/RemoteControl_2_API} for
+See \url{https://www.limesurvey.org/manual/RemoteControl_2_API} for
 API documentation. It was
 adapted by Gjalt-Jorn Peters from a function originally written by Andrew
 Heiss.

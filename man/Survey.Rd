@@ -177,17 +177,17 @@ tab separated values.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Survey$new()}}
-\item \href{#method-add_group}{\code{Survey$add_group()}}
-\item \href{#method-add_question}{\code{Survey$add_question()}}
-\item \href{#method-export_to_tsv}{\code{Survey$export_to_tsv()}}
-\item \href{#method-find_group_id}{\code{Survey$find_group_id()}}
-\item \href{#method-clone}{\code{Survey$clone()}}
+\item \href{#method-Survey-new}{\code{Survey$new()}}
+\item \href{#method-Survey-add_group}{\code{Survey$add_group()}}
+\item \href{#method-Survey-add_question}{\code{Survey$add_question()}}
+\item \href{#method-Survey-export_to_tsv}{\code{Survey$export_to_tsv()}}
+\item \href{#method-Survey-find_group_id}{\code{Survey$find_group_id()}}
+\item \href{#method-Survey-clone}{\code{Survey$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Survey-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Survey-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new survey object.
 \subsection{Usage}{
@@ -247,7 +247,8 @@ Create a new survey object.
   nokeyboard = "N",
   alloweditaftercompletion = "N",
   googleanalyticsstyle = 0,
-  googleanalyticsapikey = ""
+  googleanalyticsapikey = "",
+  new_id_fun = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -395,6 +396,17 @@ reponses (\code{N}) or to allow updating responses with one token (\code{Y})?}
 other values for other settings.}
 
 \item{\code{googleanalyticsapikey}}{The google analytics API key.}
+
+\item{\code{new_id_fun}}{A function to set identifiers (for XML exports, which
+mirrors MySQL tables and so needs identifiers). By default, new question
+objects receive this function from the group containing them; and groups
+receive it from the survey containing them. This ensures that identifiers
+are always unique in a survey (despite question objects not being able
+to 'see' anything in the group containing them, and group objects not
+being able to 'see' anything in the survey containing them; because they
+'received' this function from the parent object, and it 'bubbles down'
+through groups to the questions, those functions still get and set a
+private identifier property in the 'top-most' object).}
 }
 \if{html}{\out{</div>}}
 }
@@ -403,8 +415,8 @@ A new \code{Survey} object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_group"></a>}}
-\if{latex}{\out{\hypertarget{method-add_group}{}}}
+\if{html}{\out{<a id="method-Survey-add_group"></a>}}
+\if{latex}{\out{\hypertarget{method-Survey-add_group}{}}}
 \subsection{Method \code{add_group()}}{
 Add a group to a survey object.
 \subsection{Usage}{
@@ -435,8 +447,8 @@ Invisibly, the \code{Survey} object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_question"></a>}}
-\if{latex}{\out{\hypertarget{method-add_question}{}}}
+\if{html}{\out{<a id="method-Survey-add_question"></a>}}
+\if{latex}{\out{\hypertarget{method-Survey-add_question}{}}}
 \subsection{Method \code{add_question()}}{
 Add a question to a survey object.
 \subsection{Usage}{
@@ -464,8 +476,8 @@ Invisibly, the \code{Survey} object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-export_to_tsv"></a>}}
-\if{latex}{\out{\hypertarget{method-export_to_tsv}{}}}
+\if{html}{\out{<a id="method-Survey-export_to_tsv"></a>}}
+\if{latex}{\out{\hypertarget{method-Survey-export_to_tsv}{}}}
 \subsection{Method \code{export_to_tsv()}}{
 Export the survey as a tab separated values file (see
 https://manual.limesurvey.org/Tab_Separated_Value_survey_structure).
@@ -485,7 +497,7 @@ https://manual.limesurvey.org/Tab_Separated_Value_survey_structure).
 \describe{
 \item{\code{file}}{The filename to which to save the file.}
 
-\item{\code{preventOverwriting}}{Whether to prevent overwritting.}
+\item{\code{preventOverwriting}}{Whether to prevent overwriting.}
 
 \item{\code{parallel}}{Whether to work serially or in parallel.}
 
@@ -503,8 +515,8 @@ Invisibly, the \code{Survey} object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-find_group_id"></a>}}
-\if{latex}{\out{\hypertarget{method-find_group_id}{}}}
+\if{html}{\out{<a id="method-Survey-find_group_id"></a>}}
+\if{latex}{\out{\hypertarget{method-Survey-find_group_id}{}}}
 \subsection{Method \code{find_group_id()}}{
 Find the numeric group identifier by group title.
 \subsection{Usage}{
@@ -525,8 +537,8 @@ Invisibly, the \code{Survey} object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Survey-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Survey-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

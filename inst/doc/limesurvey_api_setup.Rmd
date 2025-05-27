@@ -1,0 +1,63 @@
+---
+title: "Setting up your computer for the LimeSurvey API"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Setting up your computer for the LimeSurvey API}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+In order to use the LimeSurvey API, you first have to setup your computer with 
+the neccesary credentials.
+
+These credentials are the name of your company account in your LimeSurvey 
+website, your user name and your password.
+
+As we use R to communicate with the API, we will put these credentials in 
+environment variables which are stored in the file .Renviron where our R code will find it.
+
+You can open this file on your machine by first installing the `{usethis}` package and then using the `edit_r_environ()` function:
+
+```{r, eval=FALSE}
+usethis::edit_r_environ();
+```
+
+Then, add these 3 lines to this file (always finish with a new line!) and save:
+
+```
+LIMESURVEY_HOST="PUT THE DOMAIN NAME OF YOUR LIMESURVEY INSTALLATION HERE!"
+LIMESURVEY_USER="PUT YOUR USER NAME HERE!"
+LIMESURVEY_PW="PUT YOUR PASSWORD HERE!"
+```
+
+To load these environment variables into your R session, you have to 
+enter the following commands into your R console.
+
+```{r, eval=FALSE}
+
+### Load the LimeSurvey environment variables into your R session:
+
+options(
+  lime_api =
+    paste0(
+      "https://", Sys.getenv("LIMESURVEY_HOST"), "/admin/remotecontrol"
+    )
+  );
+options(lime_username = Sys.getenv("LIMESURVEY_USER"));
+options(lime_password = Sys.getenv("LIMESURVEY_PW"));
+
+```
+
+You can store these commands in your `.Rprofile` file, in order to have them 
+persistently available in every R session.
+
+You can open your `.Rprofile` file with the command
+
+```{r, eval=FALSE}
+usethis::edit_r_profile();
+```
+
+Finally you just have to restart R (enter `ctrl` + `shift` + `F10` in RStudio).
+
+And voilà! Now, you should be able to communicate with the LimeSurvey API with the  function `limer_upload_tsv_to_limesurvey()` or other functions of this package.
+

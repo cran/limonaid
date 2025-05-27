@@ -71,6 +71,14 @@ ls_parse_data_import_script <- function(scriptfile = NULL,
       lapply(
         res$valueLabels,
         function(x) {
+          
+          ### 2025-01-08: when importing a file with an answer option
+          ### label with an emoji (😭), the last parenthesis isn't removed
+          ### when reading the regex. Added this hacky check to force that
+          ### if need be (no time to figure out why this is suddenly
+          ### happening now)
+          x[[4]] <- gsub("\\)\\)$", ")", x[[4]]);
+          
           eval(parse(text = paste0("y<-", x[[4]])));
           eval(parse(text = paste0("z<-", x[[3]])));
           return(stats::setNames(get('y'), nm = get('z')));

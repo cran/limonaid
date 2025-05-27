@@ -13,7 +13,7 @@ A question has at least a code and a primary language.
 
 The human-readable question types are (with some additional
 variants also being valid, in any case the literal labels used at
-\url{https://manual.limesurvey.org/Question_object_types#Current_question_types}):
+\url{https://www.limesurvey.org/manual/Question_object_types#Current_question_types}):
 \itemize{
 \item "\verb{array dual scale}"
 \item "\verb{5 point choice}"
@@ -51,7 +51,11 @@ variants also being valid, in any case the literal labels used at
 \describe{
 \item{\code{code}}{The code of the question.}
 
-\item{\code{id}}{The identifier of the question (a unique number in a survey)}
+\item{\code{id}}{The identifier of the question (a unique number in a survey).}
+
+\item{\code{gid}}{The identifier of the group to which this question belongs.}
+
+\item{\code{sid}}{The identifier of the survey to which this question belongs.}
 
 \item{\code{type}}{The question type.}
 
@@ -67,9 +71,13 @@ variants also being valid, in any case the literal labels used at
 
 \item{\code{language}}{The primary language of the question.}
 
+\item{\code{additional_languages}}{Any additional languages for the title and description elements.}
+
 \item{\code{answerOptions}}{The answer options in the question.}
 
 \item{\code{subquestions}}{The subquestions in the question.}
+
+\item{\code{parent_qid}}{The question identifier of the parent question (or 0).}
 
 \item{\code{mandatory}}{Whether the question is mandatory (\code{Y} or \code{N}).}
 
@@ -85,6 +93,8 @@ label if the default label should be overwritten (multilingual).}
 \item{\code{array_filter}}{The question code of the array filter question
 to apply.}
 
+\item{\code{question_order}}{The question order (starts at 0)}
+
 \item{\code{cssclass}}{The CSS class(es) to apply to this question.}
 
 \item{\code{hide_tip}}{Whether to hide the tip (\code{Y} or \code{N}).}
@@ -94,22 +104,37 @@ by assigning \code{as.list(...)}.}
 }
 \if{html}{\out{</div>}}
 }
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{has_subquestions}}{Whether the question has subquestions.}
+
+\item{\code{has_answerOptions}}{Whether the question has answer options}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Question$new()}}
-\item \href{#method-add_answer_option}{\code{Question$add_answer_option()}}
-\item \href{#method-add_subquestion}{\code{Question$add_subquestion()}}
-\item \href{#method-clone}{\code{Question$clone()}}
+\item \href{#method-Question-new}{\code{Question$new()}}
+\item \href{#method-Question-add_answer_option}{\code{Question$add_answer_option()}}
+\item \href{#method-Question-add_subquestion}{\code{Question$add_subquestion()}}
+\item \href{#method-Question-xmlExport_row_question}{\code{Question$xmlExport_row_question()}}
+\item \href{#method-Question-xmlExport_row_subquestions}{\code{Question$xmlExport_row_subquestions()}}
+\item \href{#method-Question-xmlExport_row_question_l10ns}{\code{Question$xmlExport_row_question_l10ns()}}
+\item \href{#method-Question-xmlExport_row_answers}{\code{Question$xmlExport_row_answers()}}
+\item \href{#method-Question-xmlExport_row_answer_l10ns}{\code{Question$xmlExport_row_answer_l10ns()}}
+\item \href{#method-Question-xmlExport_row_attributes}{\code{Question$xmlExport_row_attributes()}}
+\item \href{#method-Question-clone}{\code{Question$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Question-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Question-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new question object. Most of this text comes directly
 from the TSV manual page at
-\url{https://manual.limesurvey.org/Tab_Separated_Value_survey_structure}, so
+\url{https://www.limesurvey.org/manual/Tab_Separated_Value_survey_structure}, so
 please see that page for more details.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Question$new(
@@ -117,11 +142,14 @@ please see that page for more details.
   type = NULL,
   lsType = NULL,
   id = NULL,
+  gid = NULL,
+  sid = NULL,
   questionTexts = "",
   helpTexts = "",
   relevance = 1,
   validation = "",
   mandatory = "N",
+  parent_qid = 0,
   other = "N",
   otherReplaceTexts = "",
   default = "",
@@ -130,6 +158,9 @@ please see that page for more details.
   cssclass = "",
   hide_tip = "",
   language = "en",
+  additional_languages = "",
+  new_id_fun = NULL,
+  question_order = 0,
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -143,9 +174,13 @@ please see that page for more details.
 
 \item{\code{lsType}}{The type as LimeSurvey type ("\code{1}"; "\code{5}"; "\code{A}" to "\code{Y}",
 except "\code{J}", "\code{V}" and "\code{W}"; "\code{!}"; "\code{:}"; "\verb{;}"; "\code{*}"; or "\code{|}" --see
-\url{https://manual.limesurvey.org/Question_object_types#Current_question_types}).}
+\url{https://www.limesurvey.org/manual/Question_object_types#Current_question_types}).}
 
 \item{\code{id}}{The identifier of the question (in a survey).}
+
+\item{\code{gid}}{The identifier of the group to which this question belongs.}
+
+\item{\code{sid}}{The identifier of the survey to which this question belongs.}
 
 \item{\code{questionTexts}}{The question text(s).}
 
@@ -156,6 +191,8 @@ except "\code{J}", "\code{V}" and "\code{W}"; "\code{!}"; "\code{:}"; "\verb{;}"
 \item{\code{validation}}{The question's validation.}
 
 \item{\code{mandatory}}{Whether the question is mandatory (\code{Y} or \code{N});.}
+
+\item{\code{parent_qid}}{The question identifier of the parent question (or 0).}
 
 \item{\code{other}}{Whether the question has an 'other' option (\code{Y} or \code{N}).}
 
@@ -176,25 +213,47 @@ to apply.}
 
 \item{\code{language}}{The question's primary language.}
 
+\item{\code{additional_languages}}{Any additional languages}
+
+\item{\code{new_id_fun}}{A function to set identifiers (for XML exports, which
+mirrors MySQL tables and so needs identifiers). By default, new question
+objects receive this function from the group containing them; and groups
+receive it from the survey containing them. This ensures that identifiers
+are always unique in a survey (despite question objects not being able
+to 'see' anything in the group containing them, and group objects not
+being able to 'see' anything in the survey containing them; because they
+'received' this function from the parent object, and it 'bubbles down'
+through groups to the questions, those functions still get and set a
+private identifier property in the 'top-most' object).}
+
+\item{\code{question_order}}{The question order (starts at 0)}
+
 \item{\code{...}}{Any additional options, stored as a named list in the
 \code{otherOptions} property by assigning \code{as.list(...)}.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new \code{Survey} object.
+A new \code{Question} object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_answer_option"></a>}}
-\if{latex}{\out{\hypertarget{method-add_answer_option}{}}}
+\if{html}{\out{<a id="method-Question-add_answer_option"></a>}}
+\if{latex}{\out{\hypertarget{method-Question-add_answer_option}{}}}
 \subsection{Method \code{add_answer_option()}}{
 Add an answer option to a question. Most of this text comes directly
 from the TSV manual page at
-https://manual.limesurvey.org/Tab_Separated_Value_survey_structure, so
+https://www.limesurvey.org/manual/Tab_Separated_Value_survey_structure, so
 please see that page for more details.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Question$add_answer_option(code, optionTexts, type.scale = 0, relevance = "")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Question$add_answer_option(
+  code,
+  optionTexts,
+  type.scale = 0,
+  relevance = "",
+  assessment.value = 0,
+  sort.order = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -206,8 +265,13 @@ please see that page for more details.
 
 \item{\code{type.scale}}{\code{0} or \code{1} (e.g. for dual-scale; 'scale_id').}
 
-\item{\code{relevance}}{If using assessment option, this is the assessment
+\item{\code{relevance}}{The answer option's relevance equation.}
+
+\item{\code{assessment.value}}{If using assessment, this is the assessment
 value for the answer ('assessment_value').}
+
+\item{\code{sort.order}}{The sort order (to manually specify); starts at 0. If
+left empty, new options are added at the bottom.}
 }
 \if{html}{\out{</div>}}
 }
@@ -216,12 +280,12 @@ Invisibly, the question object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_subquestion"></a>}}
-\if{latex}{\out{\hypertarget{method-add_subquestion}{}}}
+\if{html}{\out{<a id="method-Question-add_subquestion"></a>}}
+\if{latex}{\out{\hypertarget{method-Question-add_subquestion}{}}}
 \subsection{Method \code{add_subquestion()}}{
 Add a subquestion to a question. Most of this text comes directly from
 the TSV manual page at
-https://manual.limesurvey.org/Tab_Separated_Value_survey_structure, so
+https://www.limesurvey.org/manual/Tab_Separated_Value_survey_structure, so
 please see that page for more details.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Question$add_subquestion(
@@ -233,7 +297,8 @@ please see that page for more details.
   validation = "",
   mandatory = "",
   default = "",
-  same_default = ""
+  same_default = "",
+  subquestion.order = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -266,6 +331,9 @@ subquestion (inserted into defaultvalues table).}
 
 \item{\code{same_default}}{If set, then the default for the primary language
 is used for all other languages.}
+
+\item{\code{subquestion.order}}{The subquestion order (to manually specify);
+starts at 0. If left empty, new options are added at the bottom.}
 }
 \if{html}{\out{</div>}}
 }
@@ -274,8 +342,150 @@ Invisibly, the question object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Question-xmlExport_row_question"></a>}}
+\if{latex}{\out{\hypertarget{method-Question-xmlExport_row_question}{}}}
+\subsection{Method \code{xmlExport_row_question()}}{
+Export the question in XML format (for lss, lsg, or lsq files).
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Question$xmlExport_row_question(silent = limonaid::opts$get("silent"))}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{silent}}{Whether to be silent or chatty.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The produced XML
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Question-xmlExport_row_subquestions"></a>}}
+\if{latex}{\out{\hypertarget{method-Question-xmlExport_row_subquestions}{}}}
+\subsection{Method \code{xmlExport_row_subquestions()}}{
+Export the question in XML format (for lss, lsg, or lsq files).
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Question$xmlExport_row_subquestions(
+  returnRows = FALSE,
+  silent = limonaid::opts$get("silent")
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{returnRows}}{Whether to return a list with each row as element,
+or a \code{rows} node (as \code{xml2} object) containing each row as nodes}
+
+\item{\code{silent}}{Whether to be silent or chatty.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The produced XML
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Question-xmlExport_row_question_l10ns"></a>}}
+\if{latex}{\out{\hypertarget{method-Question-xmlExport_row_question_l10ns}{}}}
+\subsection{Method \code{xmlExport_row_question_l10ns()}}{
+Export the question's question_l10ns info in a list of XML nodes.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Question$xmlExport_row_question_l10ns(
+  id_fun = private$new_id(),
+  silent = limonaid::opts$get("silent")
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id_fun}}{The function to use to produce unique identifiers}
+
+\item{\code{silent}}{Whether to be silent or chatty.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The produced list of XML nodes
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Question-xmlExport_row_answers"></a>}}
+\if{latex}{\out{\hypertarget{method-Question-xmlExport_row_answers}{}}}
+\subsection{Method \code{xmlExport_row_answers()}}{
+Export the answer options in XML format (for lss, lsg, or lsq files).
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Question$xmlExport_row_answers(
+  returnRows = FALSE,
+  silent = limonaid::opts$get("silent")
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{returnRows}}{Whether to return a list with each row as element,
+or a \code{rows} node (as \code{xml2} object) containing each row as nodes}
+
+\item{\code{silent}}{Whether to be silent or chatty.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The produced XML
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Question-xmlExport_row_answer_l10ns"></a>}}
+\if{latex}{\out{\hypertarget{method-Question-xmlExport_row_answer_l10ns}{}}}
+\subsection{Method \code{xmlExport_row_answer_l10ns()}}{
+Export the question's answer optoin l10ns info in a list of XML nodes.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Question$xmlExport_row_answer_l10ns(
+  id_fun = private$new_id,
+  silent = limonaid::opts$get("silent")
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id_fun}}{The function to use to produce unique identifiers}
+
+\item{\code{silent}}{Whether to be silent or chatty.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The produced list of XML nodes
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Question-xmlExport_row_attributes"></a>}}
+\if{latex}{\out{\hypertarget{method-Question-xmlExport_row_attributes}{}}}
+\subsection{Method \code{xmlExport_row_attributes()}}{
+Export the question's attributes in a list of XML nodes.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Question$xmlExport_row_attributes(silent = limonaid::opts$get("silent"))}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{silent}}{Whether to be silent or chatty.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The produced list of XML nodes
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Question-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Question-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

@@ -20,6 +20,7 @@ ls_import_data(
   dataHasVarNames = TRUE,
   dataEncoding = "UTF-8-BOM",
   scriptEncoding = NULL,
+  sticky = limonaid::opts$get("sticky"),
   silent = limonaid::opts$get("silent")
 )
 }
@@ -62,6 +63,9 @@ using \code{\link{massConvertToNumeric}}.}
 \item{dataEncoding, scriptEncoding}{The encoding of the files; can be used
 to override the setting in the \code{limonaid} options (i.e. in \code{opts}) in the
 \code{encoding} field (the default value is "\code{UTF-8}").}
+
+\item{sticky}{Whether to make labels sticky (requires the {\code{sticky}}
+package).}
 
 \item{silent}{Whether to be silent or verbose ('chatty').}
 }

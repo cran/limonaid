@@ -6,13 +6,23 @@
 \usage{
 get_session_key(
   username = getOption("lime_username"),
-  password = getOption("lime_password")
+  password = getOption("lime_password"),
+  hostname = getOption("lime_api")
 )
 }
 \arguments{
-\item{username}{LimeSurvey username. Defaults to value set in \code{options()}.}
+\item{username}{LimeSurvey username.
+Defaults to value set in \code{options()}.}
 
-\item{password}{LimeSurvey password Defaults to value set in \code{options()}.}
+\item{password}{LimeSurvey password.
+Defaults to value set in \code{options()}.}
+
+\item{hostname}{The host to use (if not using the one specified in
+the options). If no hostname is specified in the \code{'lime_api'} option and
+no host name is passed as \code{hostname}, the subdomain stored in
+\code{limonaid::opts$get("ls_subdomain")} will be combined with the
+domain stored in \code{limonaid::opts$get("ls_domain")} to create the
+host name. You can change these using the \code{limonaid::opts$set()} function.}
 }
 \value{
 API token

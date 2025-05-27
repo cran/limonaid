@@ -36,6 +36,8 @@
 #' @param dataEncoding,scriptEncoding The encoding of the files; can be used
 #' to override the setting in the `limonaid` options (i.e. in `opts`) in the
 #' `encoding` field (the default value is "`UTF-8`").
+#' @param sticky Whether to make labels sticky (requires the {`sticky`}
+#' package).
 #' @param silent Whether to be silent or verbose ('chatty').
 #' @return The dataframe.
 #' @examples
@@ -77,7 +79,8 @@ ls_import_data <- function(
   dataHasVarNames = TRUE,
   dataEncoding="UTF-8-BOM", #'UTF-8', 'unknown',
   scriptEncoding=NULL, # 'ASCII'
-  silent=limonaid::opts$get("silent")) {
+  sticky = limonaid::opts$get("sticky"),
+  silent = limonaid::opts$get("silent")) {
 
   # limeSurveyRegEx.varNames <-
   #   limonaid::opts$get("data_import_RegEx_varNames");
@@ -194,6 +197,7 @@ ls_import_data <- function(
                            convertToFactor = convertToFactor,
                            categoricalQuestions = categoricalQuestions,
                            massConvertToNumeric = massConvertToNumeric,
+                           sticky = sticky,
                            silent = silent);
 
   } else {

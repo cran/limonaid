@@ -68,21 +68,21 @@ lsdf_for_language <- function(language,
 
     newRow <-
       data.frame(
-        id = currentGroupId,
+        id = unname(currentGroupId),
         related_id = "",
         class="G",
         type.scale = "0",
-        name = curLang_surveyTitle,
-        relevance = groups[[currentGroup]]$relevance,
-        text = curLang_surveyDescription,
+        name = unname(curLang_surveyTitle),
+        relevance = unname(groups[[currentGroup]]$relevance),
+        text = unname(curLang_surveyDescription),
         help = "",
-        language = currentLanguage,
+        language = unname(currentLanguage),
         validation = "",
         mandatory = "",
         other = "",
         default = "",
         same_default = "",
-        random_group = groups[[currentGroup]]$random_group,
+        random_group = unname(groups[[currentGroup]]$random_group),
         stringsAsFactors = FALSE
       );
 
@@ -164,21 +164,21 @@ lsdf_for_language <- function(language,
       ### Specify this new row
       newRow <-
         data.frame(
-          id = currentQuestionId,
+          id = unname(currentQuestionId),
           related_id = "",
           class="Q",
-          type.scale = convenienceQ$lsType,
-          name = convenienceQ$code,
-          relevance = convenienceQ$relevance,
-          text = curLang_questionText,
-          help = curLang_questionHelp,
-          other_replace_text = curLang_otherReplaceText,
-          language = currentLanguage,
-          validation = convenienceQ$validation,
-          mandatory = convenienceQ$mandatory,
-          other = convenienceQ$other,
-          default = convenienceQ$default,
-          same_default = convenienceQ$same_default,
+          type.scale = unname(convenienceQ$lsType),
+          name = unname(convenienceQ$code),
+          relevance = unname(convenienceQ$relevance),
+          text = unname(curLang_questionText),
+          help = unname(curLang_questionHelp),
+          other_replace_text = unname(curLang_otherReplaceText),
+          language = unname(currentLanguage),
+          validation = unname(convenienceQ$validation),
+          mandatory = unname(convenienceQ$mandatory),
+          other = unname(convenienceQ$other),
+          default = unname(convenienceQ$default),
+          same_default = unname(convenienceQ$same_default),
           stringsAsFactors = FALSE
         );
 
@@ -304,20 +304,20 @@ lsdf_for_language <- function(language,
           ### Specify this new row
           newRow <-
             data.frame(
-              id = currentSubQuestionId,
+              id = unname(currentSubQuestionId),
               related_id = "",
               class="SQ",
-              type.scale = typeScale,
-              name = convenienceSQ$code,
-              relevance = convenienceSQ$relevance,
-              text = curLang_subquestionText,
-              help = curLang_subquestionHelp,
-              language = currentLanguage,
-              validation = convenienceSQ$validation,
-              mandatory = convenienceSQ$mandatory,
+              type.scale = unname(typeScale),
+              name = unname(convenienceSQ$code),
+              relevance = unname(convenienceSQ$relevance),
+              text = unname(curLang_subquestionText),
+              help = unname(curLang_subquestionHelp),
+              language = unname(currentLanguage),
+              validation = unname(convenienceSQ$validation),
+              mandatory = unname(convenienceSQ$mandatory),
               other = "",
-              default = convenienceSQ$default,
-              same_default = convenienceSQ$same_default,
+              default = unname(convenienceSQ$default),
+              same_default = unname(convenienceSQ$same_default),
               stringsAsFactors = FALSE
             );
 
@@ -358,15 +358,15 @@ lsdf_for_language <- function(language,
           ### Specify this new row
           newRow <-
             data.frame(
-              id = currentQuestionId,  ### Id of Q, not of A!
+              id = unname(currentQuestionId),  ### Id of Q, not of A!
               related_id = "",
               class="A",
-              type.scale = typeScale,
-              name = convenienceA$code,
-              relevance = convenienceA$relevance,
-              text = curLang_optionText,
+              type.scale = unname(typeScale),
+              name = unname(convenienceA$code),
+              relevance = unname(convenienceA$relevance),
+              text = unname(curLang_optionText),
               help = "",
-              language = currentLanguage,
+              language = unname(currentLanguage),
               validation = "",
               mandatory = "",
               other = "",

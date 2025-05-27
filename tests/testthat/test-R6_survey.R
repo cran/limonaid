@@ -133,7 +133,7 @@ testthat::test_that("exporting an en/nl survey with a slider works", {
 
   ### CRAN tests only allow 2 cores max, and the trick from Stack Exchange
   ### seems to not work properly.
-  limonaid::opts$set(maxCores = 2)
+  limonaid::opts$set(maxCores = 2);
 
   ls <- limonaid::Survey$new(c(en = "Test Survey",
                                nl = "Uittestvragenlijst"));
@@ -143,7 +143,9 @@ testthat::test_that("exporting an en/nl survey with a slider works", {
                c(en = "First group description",
                  nl = "Beschrijving van de eerste groep"));
 
-  ls$add_question(groupId = 1,
+  firstGroupId <- as.character(ls$get_group_ids);
+
+  ls$add_question(groupId = firstGroupId,
                   code = "q1",
                   questionTexts =
                     c(en = "Q1 question text",
@@ -153,12 +155,12 @@ testthat::test_that("exporting an en/nl survey with a slider works", {
                       nl = "Q1 hulptekst"),
                   type = "radiobuttons");
 
-  ls$groups$`1`$questions$q1$add_answer_option(
+  ls$groups[[firstGroupId]]$questions$q1$add_answer_option(
     code = 1,
     optionTexts = c(en = "Q1, A1, in English",
                     nl = "Q1, A1, in Dutch"));
 
-  ls$groups$`1`$questions$q1$add_answer_option(
+  ls$groups[[firstGroupId]]$questions$q1$add_answer_option(
     code = 2,
     optionTexts = c(en = "Q1, A2, in English",
                     nl = "Q1, A2, in Dutch"));
@@ -168,7 +170,9 @@ testthat::test_that("exporting an en/nl survey with a slider works", {
                c(en = "Second group description",
                  nl = "Beschrijving van de tweede groep"));
 
-  ls$add_question(groupId = 2,
+  secondGroupId <- as.character(ls$get_group_ids[2]);
+
+  ls$add_question(groupId = secondGroupId,
                   code = "sliderQuestion",
                   questionTexts =
                     c(en = "Q2 question text",
@@ -181,7 +185,9 @@ testthat::test_that("exporting an en/nl survey with a slider works", {
                   slider_max = 25,
                   slider_default = 5);
 
-  ls$groups$`2`$questions$sliderQuestion$add_subquestion(
+
+
+  ls$groups[[secondGroupId]]$questions$sliderQuestion$add_subquestion(
     code = "nr",
     subquestionTexts = "subquestion text"
   );
@@ -192,7 +198,8 @@ testthat::test_that("exporting an en/nl survey with a slider works", {
   #tmpFile <- "B:/Data/R/limonaid/inst/extdata/testing-multilingual-slider-export.txt";
 
   ls$export_to_tsv(file = tmpFile,
-                   preventOverwriting = FALSE);
+                   preventOverwriting = FALSE,
+                   silent=TRUE);
 
   cat(tmpFile);
 
